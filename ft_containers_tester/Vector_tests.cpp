@@ -6,7 +6,7 @@
 /*   By: smhah <smhah@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/24 11:32:49 by ibaali            #+#    #+#             */
-/*   Updated: 2022/06/10 06:51:32 by smhah            ###   ########.fr       */
+/*   Updated: 2022/06/10 08:34:34 by smhah            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -2444,5 +2444,6 @@ int main(void)
     reverse_iterator_tests();
     reverse_iterator_with_ft_vector();
     vector_tests();
+    system("leaks vector.out");
     return 0;
 }

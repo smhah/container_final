@@ -6,7 +6,7 @@
 /*   By: smhah <smhah@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/03 22:44:26 by smhah             #+#    #+#             */
-/*   Updated: 2022/06/10 06:54:35 by smhah            ###   ########.fr       */
+/*   Updated: 2022/06/10 08:35:16 by smhah            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,17 +26,7 @@ namespace ft
 			> class map
 	{
 		public:
-
-		// struct Node
-		// {
-		// 	m_value_type content;
-		// 	Node *left;
-		// 	Node *right;
-		// 	Node *parent;
-		// 	int height;
-		// };
-		// typedef typename Alloc::template rebind<Node>::other aloc;
-		
+	
 		typedef Key key_type;
 		typedef T mapped_type;
 		typedef ft::pair<const key_type,mapped_type> value_type;
@@ -112,6 +102,8 @@ namespace ft
 			return(*this);
 		}
 		// An AVL tree node
+		
+		private:
 		typedef ft::pair<key_type,mapped_type> m_value_type;
 
 		struct Node
@@ -122,23 +114,13 @@ namespace ft
 			Node *parent;
 			int height;
 		};
-		
-		Node * get_root(void)
-		{
-			return (_root);
-		}
-		
-		
+		public:
 		typedef typename ft::map_iter<Node, m_value_type,Compare> iterator;
 		typedef typename ft::map_iter<Node, const m_value_type, Compare> const_iterator;
 		typedef typename ft::reverse_iterator<const_iterator> const_reverse_iterator;
         typedef typename ft::reverse_iterator<iterator> reverse_iterator;
 
 		//typedef typename Alloc::template rebind<Node>::other aloc;
-		typename Alloc::template rebind<Node>::other _aln;
-		Node *_root;
-		Node *last_inserted;
-		Node *not_inserted;
 	
 		iterator begin()
 		{
@@ -186,6 +168,12 @@ namespace ft
 			return (0);
 		}
 
+		private:
+		typename Alloc::template rebind<Node>::other _aln;
+		Node *_root;
+		Node *last_inserted;
+		Node *not_inserted;
+
 		Node *search(Node *node, const key_type & k) const
 		{
 			if (node == NULL)
@@ -201,31 +189,6 @@ namespace ft
             return node;	
 		}
 		
-		iterator find (const key_type & k)
-		{
-			return (iterator(search(_root, k), _root));
-		}
-
-		// const_iterator find (const key_type& k) const;
-		size_type size() const
-		{
-			return _size;
-		}
-		
-		bool empty() const
-		{
-			return(_size == 0);
-		}
-
-		key_compare key_comp() const
-		{
-			return (_kc);
-		}
-
-        allocator_type get_allocator() const
-		{
-			return _al;
-		}
 		
 		Node *bound(Node *root, key_type k)
         {
@@ -267,55 +230,6 @@ namespace ft
             return parent;
         }
 		
-		iterator lower_bound (const key_type& k)
-		{
-			return (iterator(bound(_root, k), _root));
-		}
-
-		const_iterator lower_bound (const key_type& k) const
-		{
-			return (const_iterator(bound(_root, k), _root));
-		}
-
-		iterator upper_bound (const key_type& k)
-        {
-            Node *n = bound(_root, k);
-            iterator it = iterator(n, _root);
-            if(it != end() && !_kc(n->content->first,k) && !_kc(k, n->content->first))
-                return(++it);
-            return(it);
-        }
-	
-		const_iterator upper_bound (const key_type& k) const
-        {
-            Node *n = bound(_root, k);
-            iterator it = iterator(n, _root);
-            if(it != end() && !_kc(n->content->first,k) && !_kc(k, n->content->first))
-                return(++it);
-            return(it);
-        }
-		
-		pair<const_iterator,const_iterator> equal_range (const key_type& k) const
-        {
-            return (ft::make_pair(lower_bound(k), upper_bound(k)));
-        }
-		
-        pair<iterator,iterator> equal_range (const key_type& k)
-        {
-            return (ft::make_pair(lower_bound(k), upper_bound(k)));
-        }
-	
-		value_compare value_comp() const
-        {
-            return (value_compare(_kc));
-        }
-
-		void swap (map& x)
-        {
-            std::swap(_size, x._size);
-            std::swap(_root, x._root);
-            std::swap(_kc, x._kc);
-        }
 		// A utility function to get the
 		// height of the tree
 		// template<class Key, class T>
@@ -425,40 +339,6 @@ namespace ft
 			return height(N->left) - height(N->right);
 		}
 
-		pair<iterator,bool> insert (const m_value_type& val)
-        {
-            size_t s = _size;
-            _root = insert(_root, val, _root);
-            if (s == _size)
-                return(ft::make_pair(iterator(not_inserted,_root), false));
-            else
-                return(ft::make_pair(iterator(last_inserted,_root), true));
-        }
-
-		void insert (iterator position, const m_value_type& val)
-        {
-            (void) position;
-            insert(val);
-        }
-
-		template <class InputIterator>
-        void insert (InputIterator first, InputIterator last)
-        {
-            while (first != last)
-            {
-               insert(*first);
-                first++;
-            }
-        }
-
-		mapped_type& operator[] (const key_type& k)
-        {
-            return (*((this->insert(ft::make_pair(k,mapped_type()))).first)).second;
-        }
-		// Recursive function to insert a key
-		// in the subtree rooted with node and
-		// returns the new root of the subtree.
-		// template<class Key, class T>
 		Node* insert(Node* node, const m_value_type & content, Node* parent)
 		{
 			/* 1. Perform the normal BST insertion */
@@ -708,19 +588,9 @@ namespace ft
 		
 			return root;
 		}
+		
+		public:
 
-		struct Trunk
-		{
-			Trunk *prev;
-			std::string str;
-		
-			Trunk(Trunk *prev, std::string str)
-			{
-				this->prev = prev;
-				this->str = str;
-			}
-		};
-		
 		size_type erase (const key_type& k)
         {
             size_type s = _size;
@@ -757,74 +627,118 @@ namespace ft
                 i++;
             }
         }
-		// Helper function to print branches of the binary tree
-		void showTrunks(Trunk *p)
-		{
-			if (p == nullptr) {
-				return;
-			}
 		
-			showTrunks(p->prev);
-			std::cout << p->str;
+		iterator find (const key_type & k)
+		{
+			return (iterator(search(_root, k), _root));
 		}
 
-		// template<class Key, class T>
-		void printTree(Node* root, Trunk *prev, bool isLeft)
+		// const_iterator find (const key_type& k) const;
+		size_type size() const
 		{
-			if (root == nullptr) {
-				return;
-			}
+			return _size;
+		}
 		
-			std::string prev_str = "    ";
-			Trunk *trunk = new Trunk(prev, prev_str);
-		
-			printTree(root->right, trunk, true);
-		
-			if (!prev) {
-				trunk->str = "———";
-			}
-			else if (isLeft)
-			{
-				trunk->str = ".———";
-				prev_str = "   |";
-			}
-			else {
-				trunk->str = "`———";
-				prev->str = prev_str;
-			}
-		
-			showTrunks(trunk);
-			std::cout << " " << root->content->first << std::endl;
-		
-			if (prev) {
-				prev->str = prev_str;
-			}
-			trunk->str = "   |";
-		
-			printTree(root->left, trunk, false);
+		bool empty() const
+		{
+			return(_size == 0);
 		}
 
-		// template<class Key, class T>
-		void preOrder(Node *root)
+		key_compare key_comp() const
 		{
-			if(root != NULL)
-			{
-				std::cout <<"key is " << root->content->first << std::endl;
-				if(root->left)
-					std::cout << "left child is " << root->left->content->first << std::endl;
-				if (root->right)
-					std::cout << "right child is " << root->right->content->first << std::endl;
-				if(root->parent)
-					std::cout <<"parent is " << root->parent->content->first <<std::endl;
-				preOrder(root->left);
-				preOrder(root->right);
-			}
+			return (_kc);
 		}
+
+        allocator_type get_allocator() const
+		{
+			return _al;
+		}
+		
+		iterator lower_bound (const key_type& k)
+		{
+			return (iterator(bound(_root, k), _root));
+		}
+
+		const_iterator lower_bound (const key_type& k) const
+		{
+			return (const_iterator(bound(_root, k), _root));
+		}
+
+		iterator upper_bound (const key_type& k)
+        {
+            Node *n = bound(_root, k);
+            iterator it = iterator(n, _root);
+            if(it != end() && !_kc(n->content->first,k) && !_kc(k, n->content->first))
+                return(++it);
+            return(it);
+        }
+	
+		const_iterator upper_bound (const key_type& k) const
+        {
+            Node *n = bound(_root, k);
+            iterator it = iterator(n, _root);
+            if(it != end() && !_kc(n->content->first,k) && !_kc(k, n->content->first))
+                return(++it);
+            return(it);
+        }
+		
+		pair<const_iterator,const_iterator> equal_range (const key_type& k) const
+        {
+            return (ft::make_pair(lower_bound(k), upper_bound(k)));
+        }
+		
+        pair<iterator,iterator> equal_range (const key_type& k)
+        {
+            return (ft::make_pair(lower_bound(k), upper_bound(k)));
+        }
+	
+		value_compare value_comp() const
+        {
+            return (value_compare(_kc));
+        }
+
+		void swap (map& x)
+        {
+            std::swap(_size, x._size);
+            std::swap(_root, x._root);
+            std::swap(_kc, x._kc);
+        }
+
+		pair<iterator,bool> insert (const m_value_type& val)
+        {
+            size_t s = _size;
+            _root = insert(_root, val, _root);
+            if (s == _size)
+                return(ft::make_pair(iterator(not_inserted,_root), false));
+            else
+                return(ft::make_pair(iterator(last_inserted,_root), true));
+        }
+
+		void insert (iterator position, const m_value_type& val)
+        {
+            (void) position;
+            insert(val);
+        }
+
+		template <class InputIterator>
+        void insert (InputIterator first, InputIterator last)
+        {
+            while (first != last)
+            {
+               insert(*first);
+                first++;
+            }
+        }
+
+		mapped_type& operator[] (const key_type& k)
+        {
+            return (*((this->insert(ft::make_pair(k,mapped_type()))).first)).second;
+        }
+
 		private:
             size_t  _size;
             allocator_type   _al;
             key_compare _kc;
-			//aloc	_aln;
 	};
 	//relational operators
     template <class Key, class T, class Compare, class Alloc>
