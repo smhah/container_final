@@ -6,7 +6,7 @@
 /*   By: smhah <smhah@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/13 16:37:43 by smhah             #+#    #+#             */
-/*   Updated: 2022/06/10 06:13:42 by smhah            ###   ########.fr       */
+/*   Updated: 2022/06/10 06:25:22 by smhah            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,8 @@ int main(int ac, char **av)
     // my_it1 = my_v.begin() + 1;
 	// tmp = my_it++;
     // std::cout << "my_*it = " << *my_it << "*tmp = " << *tmp << std::endl;
-    for(int i = 0; i < 10; i++)
-    {
-        my_v.push_back(i);
-    }
+    ft::Vector<std::string> ft_v1(10, "string1");
+    ft::Vector<std::string> ft_v2(10, "string2");
+    ft_v1 = ft_v2;
 	system("leaks a.out");
 }

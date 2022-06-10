@@ -6,7 +6,7 @@
 /*   By: smhah <smhah@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/13 16:33:18 by smhah             #+#    #+#             */
-/*   Updated: 2022/06/10 05:50:58 by smhah            ###   ########.fr       */
+/*   Updated: 2022/06/10 06:48:31 by smhah            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,29 +52,10 @@ namespace ft
 
 			//_________constructors________________
 			
-			Vector(const allocator_type & alloc= allocator_type()) : _allocator(alloc)
+			explicit Vector(const allocator_type & alloc= allocator_type()) : _allocator(alloc), _content(NULL), _size(0), _capacity(0)
 			{
-				_capacity = 0;
-				this->_content = this->_allocator.allocate(_capacity);
-				this->_size = 0;
 			};
 			
-			// explicit Vector (size_type n, const value_type& val = value_type(),
-			// 		const allocator_type& alloc = allocator_type()) : _allocator(alloc)
-			// {
-			// 	_capacity = 2;
-			// 	_content = _allocator.allocate(_capacity);
-			// 	_size = 0;
-			// 	while(n > _capacity)
-			// 		realloc_capacity();
-			// 	size_type i = 0;
-			// 	while(i < n)
-			// 	{
-			// 		_allocator.construct(_content + i, val);
-			// 		i++;
-			// 		_size++;
-			// 	}
-			// }
 			explicit Vector (size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type()) : _allocator(alloc), _size(n),  _capacity(n)
 			{
 				if (n)
@@ -119,8 +100,7 @@ namespace ft
 			//_________operators__________
 			Vector &	operator=(Vector const & rhs)
 			{
-				this->clear();
-				_content = _allocator.allocate(rhs._capacity);
+				reserve(rhs._capacity);
 				for(size_type i = 0; i < rhs.size(); i++)
 					_allocator.construct(_content + i, rhs._content[i]);
 				_capacity = rhs._capacity;
