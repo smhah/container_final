@@ -6,7 +6,7 @@
 /*   By: smhah <smhah@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/13 16:33:18 by smhah             #+#    #+#             */
-/*   Updated: 2022/03/29 21:54:06 by smhah            ###   ########.fr       */
+/*   Updated: 2022/06/10 05:50:58 by smhah            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,9 @@ namespace ft
 			
 			~Vector()
 			{
-				//delete [] _content;
+				for(size_type i = 0; i < _size; ++i)
+			        _allocator.destroy(&_content[i]);
+		        _allocator.deallocate(_content, _capacity);
 			};
 			//_________operators__________
 			Vector &	operator=(Vector const & rhs)

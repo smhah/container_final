@@ -6,7 +6,7 @@
 /*   By: smhah <smhah@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/03 22:44:26 by smhah             #+#    #+#             */
-/*   Updated: 2022/06/10 05:41:38 by smhah            ###   ########.fr       */
+/*   Updated: 2022/06/10 05:53:55 by smhah            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -742,8 +742,8 @@ namespace ft
 		void erase (iterator first, iterator last)
         {
             size_t i = 0;
-            ft::Vector<key_type> vec;
-            
+            //ft::Vector<key_type> vec;
+            std::vector<key_type> vec;
             if (first == last)
                 return ;
             while (first != last)
