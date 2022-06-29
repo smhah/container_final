@@ -6,7 +6,7 @@
 /*   By: smhah <smhah@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/13 16:33:18 by smhah             #+#    #+#             */
-/*   Updated: 2022/06/10 08:32:44 by smhah            ###   ########.fr       */
+/*   Updated: 2022/06/29 00:09:45 by smhah            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -208,30 +208,6 @@ namespace ft
 				return (_content[index]);
 			}
 			
-			void	realloc_capacity(size_type n = 0)
-			{
-				if (n > max_size())
-					throw std::length_error("allocator<T>::allocate(size_t n) 'n' exceeds maximum supported size");
-				
-				if (!_capacity)
-				{
-					_capacity = n ? n : 1;
-					_content = _allocator.allocate(_capacity);
-					return ;
-				}
-
-				pointer		tmp = _content;
-				size_type	cap = _capacity;
-
-				_capacity = n ? n : _capacity * 2;
-
-				_content = _allocator.allocate(_capacity);
-				for (size_type i = 0; i < _size; i++)
-					_allocator.construct(_content + i, tmp[i]);
-
-				_allocator.deallocate(tmp, cap);
-			}
-			
 			void push_back (const value_type& val)
 			{
 				if(_size + 1 > _capacity)
@@ -414,6 +390,30 @@ namespace ft
 			pointer _content;
 			size_type	_size;
 			size_type		_capacity;
+
+			void	realloc_capacity(size_type n = 0)
+			{
+				if (n > max_size())
+					throw std::length_error("allocator<T>::allocate(size_t n) 'n' exceeds maximum supported size");
+				
+				if (!_capacity)
+				{
+					_capacity = n ? n : 1;
+					_content = _allocator.allocate(_capacity);
+					return ;
+				}
+
+				pointer		tmp = _content;
+				size_type	cap = _capacity;
+
+				_capacity = n ? n : _capacity * 2;
+
+				_content = _allocator.allocate(_capacity);
+				for (size_type i = 0; i < _size; i++)
+					_allocator.construct(_content + i, tmp[i]);
+
+				_allocator.deallocate(tmp, cap);
+			}
 	};
 	template <class T, class Alloc>
 		bool	operator== (const Vector<T, Alloc>& lhs, const Vector<T, Alloc>& rhs)

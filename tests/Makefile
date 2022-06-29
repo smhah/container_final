@@ -11,11 +11,7 @@
 # ************************************************************************************************** #
 
 COMPILER = clang++
-FLAGS_DEBUG = --std=c++98 -Wall -Wextra -Werror 
-FLAGS = --std=c++98 -Wall -Wextra -Werror -g3#-fsanitize=address #-g3
-
-vector_tle:
-	@$(COMPILER) $(FLAGS_DEBUG)	Vector_tests_tle.cpp -o vector.out 
+FLAGS = --std=c++98 -Wall -Wextra -Werror -g3
 
 vector:
 	@$(COMPILER) $(FLAGS)	Vector_tests.cpp -o vector.out 
@@ -26,7 +22,5 @@ map:
 stack:
 	@$(COMPILER) $(FLAGS)	Stack_tests.cpp -o stack.out 
 
-set:
-	@$(COMPILER) $(FLAGS)	Set_tests.cpp -o set.out 
 clean:
-	rm -f vector.out map.out stack.out set.out
+	rm -f vector.out map.out stack.out
